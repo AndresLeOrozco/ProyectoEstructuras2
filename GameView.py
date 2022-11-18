@@ -1,6 +1,9 @@
 import tkinter
 import tkinter.ttk
 from tkinter import *
+import random
+
+from Player import Player
 
 
 class firstScreen:
@@ -24,7 +27,8 @@ class firstScreen:
         buttonSalir.pack()
 
     def players_window(self):
-        new_window = playerScreen()
+        nextScreen = playerScreen()
+
     def ui_window(self):
         otherScreen = uiScreen()
 
@@ -64,6 +68,7 @@ class playerScreen:
         labelJugador1.pack(pady=10)
         textoJugador1 = tkinter.ttk.Entry(window)
         textoJugador1.pack()
+
 
         labelJugador2 = Label(window, text="Nombre del segundo jugador", font=('consolas', 20))
         labelJugador2.pack(pady=10)
@@ -136,3 +141,31 @@ class gameScreen:
                     self.label.config(text=("EMPATADO"))
 
 
+    def validate_winner(self):
+
+        for row in range(3):
+            if self.buttons[row][0]['text'] == self.buttons[row][1]['text'] == self.buttons[row][2]['text'] != "":
+                return True
+
+        for column in range(3):
+            if self.buttons[0][column]['text'] == self.buttons[1][column]['text'] == self.buttons[2][column]['text'] != "":
+                return True
+
+        if self.buttons[0][0]['text'] == self.buttons[1][1]['text'] == self.buttons[2][2]['text'] != "":
+            return True
+        elif self.buttons[0][2]['text'] == self.buttons[1][1]['text'] == self.buttons[2][0]['text'] != "" :
+            return True
+        elif self.espacios_vacios() is False:
+            return "Empate"
+        else:
+            return False
+
+
+    def espacios_vacios(self):
+
+        for row in range(3):
+            for col in range (3):
+                if self.buttons[row][col]['text'] == "":
+                    return True
+
+        return False

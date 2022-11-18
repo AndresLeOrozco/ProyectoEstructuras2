@@ -1,8 +1,7 @@
 
 class Player:
-    def __int__(self,n,f):
+    def __int__(self,n):
         name = n
-        form = f
 
     def PlayerForm(self):
         print(self.form)
