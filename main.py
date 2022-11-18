@@ -1,5 +1,5 @@
 from tkinter import *
-from GameView import GameView
+from GameView import *
 
 
 # Press Mayús+F10 to execute it or replace it with your code.
@@ -13,7 +13,8 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    juego = GameView()
-    juego.__int__()
+    main_window = Tk()
+    juego = firstScreen(main_window)
+    main_window.mainloop()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
