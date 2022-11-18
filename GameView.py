@@ -25,7 +25,7 @@ class firstScreen:
     def players_window(self):
         new_window = playerScreen()
     def ui_window(self):
-        new_window = secondScreen()
+        pass
 
 
 class playerScreen:
