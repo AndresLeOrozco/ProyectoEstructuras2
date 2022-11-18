@@ -15,19 +15,40 @@ class firstScreen:
         label.pack(side=TOP)
         label2 = Label(frame1, text="Seleccione un modo de juego", font=('consolas', 30))
         label2.pack(pady=50)
-        button1Jugador = Button(frame1, command=self.players_window, text="Jugador vs Jugador", font=("consolas", 20, 'bold'))
-        button1Jugador.pack(padx=0, pady=15)
-        button2Jugador = Button(frame1, text="Jugador vs IU", font=("consolas", 20, 'bold'))
-        button2Jugador.pack()
-        button3Jugador = Button(frame1, text="Salir", font=("consolas", 20, 'bold'), command=lambda: window.destroy())
-        button3Jugador.pack()
-
-
+        button1Jugador = Button(frame1, command=self.players_window, text="Jugador vs Jugador",
+                                font=("consolas", 20, 'bold'))
+        button1Jugador.pack(pady=5)
+        button2Jugador = Button(frame1, command=self.ui_window, text="Jugador vs IU", font=("consolas", 20, 'bold'))
+        button2Jugador.pack(pady=50)
+        buttonSalir = Button(frame1, text="Salir", font=("consolas", 20, 'bold'), command=lambda: self.window.destroy())
+        buttonSalir.pack()
 
     def players_window(self):
         new_window = playerScreen()
     def ui_window(self):
-        pass #
+        otherScreen = uiScreen()
+
+
+class uiScreen():
+    def __init__(self):
+        window = Toplevel()
+        window.title("Registrar Jugador")
+        window.geometry('600x600+0+0')
+
+        labelJugador0 = Label(window, text="Registro del jugador", font=('consolas', 40))
+        labelJugador0.pack(pady=50)
+
+        labelJugador1 = Label(window, text="Nombre del jugador", font=('consolas', 20))
+        labelJugador1.pack(pady=10)
+        textoJugador1 = tkinter.ttk.Entry(window)
+        textoJugador1.pack()
+
+        button1Jugar = Button(window, text="Jugar", font=('consolas', 20),
+                              command=lambda: self.game_windows(textoJugador1.get(), "CPU"))
+        button1Jugar.pack(pady=50)
+
+    def game_windows(self, jugador1, jugador2):
+        games = gameScreen(jugador1,jugador2)
 
 
 class playerScreen:
@@ -44,14 +65,74 @@ class playerScreen:
         textoJugador1 = tkinter.ttk.Entry(window)
         textoJugador1.pack()
 
-        labelJugador2 = Label(window, text="Nombre del primer jugador", font=('consolas', 20))
-        labelJugador2.pack(pady=5)
+        labelJugador2 = Label(window, text="Nombre del segundo jugador", font=('consolas', 20))
+        labelJugador2.pack(pady=10)
         textoJugador2 = tkinter.ttk.Entry(window)
         textoJugador2.pack()
 
-        button1Jugar = Button(window, text="Jugar", command= self.game_windows())
-        button1Jugar.pack()
+        button1Jugar = Button(window, text="Jugar", font=('consolas', 20),
+                              command=lambda: self.game_windows(textoJugador1.get(), textoJugador2.get()))
+        button1Jugar.pack(pady=50)
 
-    def game_windows(self):
-        pass
+    def game_windows(self, jugador1, jugador2):
+        games = gameScreen(jugador1,jugador2)
+
+class gameScreen:
+    def __init__(self, jugador1, jugador2):
+        window = Toplevel()
+        window.title("Juego GATO")
+
+        self.jugadores = [jugador1,jugador2]
+        self.movimientos = ["X", "O"]
+
+        self.jugador = random.choice(self.jugadores)
+
+        self.buttons = [[0, 0, 0]
+                    , [0, 0, 0]
+                    , [0, 0, 0]]
+
+        self.label = Label(window, text="Turno de: " + self.jugador, font=('consolas', 40))
+        self.label.pack(side="top")
+
+        reset_button = Button(window, text="Reiniciar", font=('consolas', 20))
+        reset_button.pack(side="top")
+
+        frame = Frame(window)
+        frame.pack()
+
+        for row in range(3):
+            for column in range(3):
+                self.buttons[row][column] = Button(frame, text="", font=('consolas', 40), width=5, height=2,command=lambda row = row,column=column
+                :self.nextTurn(row,column))
+                self.buttons[row][column].grid(row=row, column=column)
+
+    def nextTurn(self,row,column):
+        if self.buttons[row][column]['text'] == "" and self.validate_winner() is False:
+
+            if self.jugador == self.jugadores[0]:
+                self.buttons[row][column]['text'] = self.movimientos[0]
+
+                if self.validate_winner() is False:
+                    self.jugador = self.jugadores[1]
+                    self.label.config(text=("Turno de: " + self.jugador))
+
+                elif self.validate_winner() is True:
+                    self.label.config(text=(self.jugador + " es le ganadore"))
+
+                elif self.validate_winner() == "Empate":
+                    self.label.config(text=("EMPATADO"))
+
+            else:
+                self.buttons[row][column]['text'] = self.movimientos[1]
+
+                if self.validate_winner() is False:
+                    self.jugador = self.jugadores[0]
+                    self.label.config(text=("Turno de: " + self.jugador))
+
+                elif self.validate_winner() is True:
+                    self.label.config(text=(self.jugador + " es le ganadore"))
+
+                elif self.validate_winner() == "Empate":
+                    self.label.config(text=("EMPATADO"))
+
 
