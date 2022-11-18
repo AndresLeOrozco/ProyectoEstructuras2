@@ -19,6 +19,8 @@ class firstScreen:
         button1Jugador.pack(padx=0, pady=15)
         button2Jugador = Button(frame1, text="Jugador vs IU", font=("consolas", 20, 'bold'))
         button2Jugador.pack()
+        button3Jugador = Button(frame1, text="Salir", font=("consolas", 20, 'bold'), command=lambda: window.destroy())
+        button3Jugador.pack()
 
 
 
@@ -47,7 +49,7 @@ class playerScreen:
         textoJugador2 = tkinter.ttk.Entry(window)
         textoJugador2.pack()
 
-        button1Jugar = Button(window, text="Jugar", command=secondScreen.game_window)
+        button1Jugar = Button(window, text="Jugar", command= self.game_windows())
         button1Jugar.pack()
 
     def game_windows(self):
