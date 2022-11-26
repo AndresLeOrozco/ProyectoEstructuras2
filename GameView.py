@@ -4,8 +4,6 @@ from tkinter import *
 import random
 import time
 
-from Player import Player
-
 
 class firstScreen:
     def __init__(self, window):
