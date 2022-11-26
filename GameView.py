@@ -139,12 +139,6 @@ class gameScreen:
             column = random.choice([0, 1, 2])
             self.nextTurn(row, column)
 
-        # if self.jugador == "CPU":
-        #     row = random.choice([0, 1, 2])
-        #     column = random.choice([0, 1, 2])
-        #     self.nextTurn(row, column)
-        # self.gameType()
-
 
     def gameType(self):
         if self.modoJuego == "easy":
@@ -157,7 +151,7 @@ class gameScreen:
             return
 
     def nextTurn(self, row, column):
-        # if self.modoJuego == 'none':
+
         if self.buttons[row][column]['text'] == "" and self.validate_winner() is False:
 
             if self.jugador == self.jugadores[0]:
@@ -189,103 +183,7 @@ class gameScreen:
 
                 elif self.validate_winner() == "Empate":
                     self.label.config(text=("EMPATADO"))
-        # elif self.modoJuego == 'easy':
-        #     if self.buttons[row][column]['text'] == "" and self.validate_winner() is False:
-        #
-        #         if self.jugador == self.jugadores[0]:
-        #             self.buttons[row][column]['text'] = self.movimientos[0]
-        #
-        #             if self.validate_winner() is False:
-        #                 self.jugador = self.jugadores[1]
-        #                 self.label.config(text=("Turno de: " + self.jugador))
-        #
-        #             elif self.validate_winner() is True:
-        #                 self.label.config(text=(self.jugador + " es le ganadore"))
-        #
-        #             elif self.validate_winner() == "Empate":
-        #                 self.label.config(text=("EMPATADO"))
-        #
-        #         else:
-        #             if self.validate_winner() is False:
-        #                 for r in range(3):
-        #                     for c in range(3):
-        #                         if self.buttons[r][c]['text'] == "":
-        #                             self.buttons[r][c]['text'] = self.movimientos[1]
-        #
-        #             if self.validate_winner() is False:
-        #                 self.jugador = self.jugadores[0]
-        #                 self.label.config(text=("Turno de: " + self.jugador))
-        #
-        #             elif self.validate_winner() is True:
-        #                 self.label.config(text=(self.jugador + " es le ganadore"))
-        #
-        #             elif self.validate_winner() == "Empate":
-        #                 self.label.config(text=("EMPATADO"))
-        #
-        # elif self.modoJuego == 'medium':
-        #     if self.buttons[row][column]['text'] == "" and self.validate_winner() is False:
-        #
-        #         if self.jugador == self.jugadores[0]:
-        #             self.buttons[row][column]['text'] = self.movimientos[0]
-        #
-        #             if self.validate_winner() is False:
-        #                 self.jugador = self.jugadores[1]
-        #                 self.label.config(text=("Turno de: " + self.jugador))
-        #
-        #             elif self.validate_winner() is True:
-        #                 self.label.config(text=(self.jugador + " es le ganadore"))
-        #
-        #             elif self.validate_winner() == "Empate":
-        #                 self.label.config(text=("EMPATADO"))
-        #
-        #         else:
-        #             if self.validate_winner() is False:
-        #                 for r in range(3):
-        #                     for c in range(3):
-        #                         if self.buttons[r][c]['text'] == "":
-        #                             self.buttons[r][c]['text'] = self.movimientos[1]
-        #
-        #             if self.validate_winner() is False:
-        #                 self.jugador = self.jugadores[0]
-        #                 self.label.config(text=("Turno de: " + self.jugador))
-        #
-        #             elif self.validate_winner() is True:
-        #                 self.label.config(text=(self.jugador + " es le ganadore"))
-        #
-        #             elif self.validate_winner() == "Empate":
-        #                 self.label.config(text=("EMPATADO"))
-        # elif self.modoJuego == 'hard':
-        #     if self.buttons[row][column]['text'] == "" and self.validate_winner() is False:
-        #
-        #         if self.jugador == self.jugadores[0]:
-        #             self.buttons[row][column]['text'] = self.movimientos[0]
-        #
-        #             if self.validate_winner() is False:
-        #                 self.jugador = self.jugadores[1]
-        #                 self.label.config(text=("Turno de: " + self.jugador))
-        #
-        #             elif self.validate_winner() is True:
-        #                 self.label.config(text=(self.jugador + " es le ganadore"))
-        #
-        #             elif self.validate_winner() == "Empate":
-        #                 self.label.config(text=("EMPATADO"))
-        #
-        #         else:
-        #             if self.validate_winner() is False:
-        #                 for r in range(3):
-        #                     for c in range(3):
-        #                         if self.buttons[r][c]['text'] == "":
-        #                             self.buttons[r][c]['text'] = self.movimientos[1]
-        #
-        #             if self.validate_winner() is False:
-        #                 self.jugador = self.jugadores[0]
-        #                 self.label.config(text=("Turno de: " + self.jugador))
-        #
-        #             elif self.validate_winner() is True:
-        #                 self.label.config(text=(self.jugador + " es le ganadore"))
-        #
-        #             elif self.validate_winner() == "Empate":
-        #                 self.label.config(text=("EMPATADO"))
+
 
     def validate_winner(self):
 
