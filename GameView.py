@@ -123,6 +123,8 @@ class gameScreen:
 
         if self.jugador == "CPU" and self.modoJuego == "easy":
             self.easyGame()
+        if self.jugador == "CPU" and self.modoJuego == "hard":
+            self.HardGame()
 
     def easyGame(self):
         if self.jugador == "CPU":
@@ -139,6 +141,32 @@ class gameScreen:
             column = random.choice([0, 1, 2])
             self.nextTurn(row, column)
 
+    def HardGame(self):
+        while self.jugador == "CPU":
+            if self.is_empty_board() is True:
+                row = 1
+                column = 1
+                self.nextTurn(row,column)
+            elif self.cantidad_jugadas() == 1:
+                row = random.choice([0, 1, 2])
+                column = random.choice([0, 1, 2])
+                self.nextTurn(row, column)
+            else:
+                coords = self.arbol_desicion(self.botones)
+                row = coords[0]
+                column = coords [1]
+                self.nextTurn(row, column)
+
+
+    def arbol_desicion(self,botones):
+       print()
+
+    def is_empty_board(self):
+        for row in range(3):
+            for column in range (3):
+                if self.buttons[row][column]['text'] != "":
+                    return False
+        return True
 
     def gameType(self):
         if self.modoJuego == "easy":
@@ -146,7 +174,7 @@ class gameScreen:
         elif self.modoJuego == "medium":
             self.mediumGame()
         elif self.modoJuego == "hard":
-            pass
+            self.HardGame()
         else:
             return
 
@@ -176,6 +204,7 @@ class gameScreen:
                     self.jugador = self.jugadores[0]
                     self.label.config(text=("Turno de: " + self.jugador))
                     self.gameType()
+
 
                 elif self.validate_winner() is True:
                     self.label.config(text=(self.jugador + " es le ganadore"))
@@ -221,3 +250,12 @@ class gameScreen:
                 if self.jugador == self.jugadores[0] == "CPU":
                     self.jugador = self.jugadores[1]
                 self.label.config(text="Turno de: " + self.jugador)
+
+    def cantidad_jugadas(self):
+        cont = 0
+        for row in range(3):
+            for col in range(3):
+                if self.buttons[row][col]['text'] == self.movimientos[0]:
+                    cont = cont+1
+
+        return cont
