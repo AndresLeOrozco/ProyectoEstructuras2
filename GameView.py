@@ -8,20 +8,20 @@ import time
 
 class firstScreen:
     def __init__(self, window):
-        self.window = window
+        self.window = window #Se crea la primera pantalla donde recibe la ventana main
         self.window.title("Pantalla Inicial")
 
         self.window.geometry('600x600+0+0')
-        frame1 = Frame(self.window)
+        frame1 = Frame(self.window) #se le agrega el frame que va a contener los componentes de la pantalla inicial
         frame1.pack()
-        label = Label(frame1, text="Juego del Gato", font=('consolas', 40))
+        label = Label(frame1, text="Juego del Gato", font=('consolas', 40)) #label titulo
         label.pack(side=TOP)
         label2 = Label(frame1, text="Seleccione un modo de juego", font=('consolas', 30))
         label2.pack(pady=50)
-        button1Jugador = Button(frame1, command=self.players_window, text="Jugador vs Jugador",
+        button1Jugador = Button(frame1, command=self.players_window, text="Jugador vs Jugador",#boton para acceder al modo de juego jug vs jug
                                 font=("consolas", 20, 'bold'))
         button1Jugador.pack(pady=5)
-        button2Jugador = Button(frame1, command=self.ui_window, text="Jugador vs IU", font=("consolas", 20, 'bold'))
+        button2Jugador = Button(frame1, command=self.ui_window, text="Jugador vs IU", font=("consolas", 20, 'bold'))#boton para acceder al modo de juego jug vs UI
         button2Jugador.pack(pady=50)
         buttonSalir = Button(frame1, text="Salir", font=("consolas", 20, 'bold'), command=lambda: self.window.destroy())
         buttonSalir.pack()
@@ -35,7 +35,7 @@ class firstScreen:
 
 class uiScreen():
     def __init__(self):
-        window = Toplevel()
+        window = Toplevel() #toma la window principal para cambiarle el frame y ponerle el frame del modo de juego UI
         window.title("Registrar Jugador")
         window.geometry('600x600+0+0')
 
@@ -49,7 +49,7 @@ class uiScreen():
 
         labeltext = Label(window, text="Seleccione la dificultad que desea Jugar", font=('consolas', 20))
         labeltext.pack(pady=10)
-
+        #Botones de dificultad contra la maquina
         button1Jugar = Button(window, text="Facil", font=('consolas', 20),
                               command=lambda: self.game_windows(textoJugador1.get(), "CPU", "easy"))
         button1Jugar.pack(pady=20)
@@ -143,7 +143,7 @@ class gameScreen:
             self.nextTurn(row, column)
 
     def HardGame(self):
-        while self.jugador == "CPU":
+        if self.jugador == "CPU":
             if self.is_empty_board() is True:
                 row = 1
                 column = 1
@@ -153,14 +153,81 @@ class gameScreen:
                 column = random.choice([0, 1, 2])
                 self.nextTurn(row, column)
             else:
-                coords = self.arbol_desicion(self.botones)
-                row = coords[0]
-                column = coords [1]
-                self.nextTurn(row, column)
+                MejorPuntuacion = float('-inf')
+                MejorMovimiento = None
+                for row in range(3):
+                    for column in range(3):
+                        if self.buttons[row][column]['text'] == "":
+                            self.buttons[row][column]['text'] = self.movimientos[1]
+                            Puntuacion = self.arbol_decision(self.buttons,0,False)
+                            self.buttons[row][column]['text'] = ""
+                            if Puntuacion > MejorPuntuacion:
+                                MejorPuntuacion = Puntuacion
+                                MejorMovimiento = [row,column]
+
+                rows = MejorMovimiento[0]
+                columns = MejorMovimiento[1]
+                self.nextTurn(rows,columns)
 
 
-    def arbol_desicion(self,botones):
-       print()
+    def arbol_decision(self, botones,cantJugadas,bandera):
+        resultado = self.quien_gana(botones)
+        if resultado != None:
+            if resultado == self.movimientos[0]:
+                return -1
+            if resultado == self.movimientos[1]:
+                return 1
+            if resultado == "Empate":
+                return 0
+
+        if bandera is True:
+            MejorPuntuacion = float('-inf')
+            for row in range(3):
+                for column in range(3):
+                    if botones[row][column]['text'] == "":
+                        botones[row][column]['text'] = self.movimientos[1]
+                        Puntuacion = self.arbol_decision(botones,cantJugadas+1, False)
+                        botones[row][column]['text'] = ""
+                        MejorPuntuacion = max(Puntuacion,MejorPuntuacion)
+            return MejorPuntuacion
+        else:
+            MejorPuntuacion = float('inf')
+            for row in range(3):
+                for column in range(3):
+                    if botones[row][column]['text'] == "":
+                        botones[row][column]['text'] = self.movimientos[0]
+                        Puntuacion = self.arbol_decision(botones, cantJugadas+1, True)
+                        botones[row][column]['text'] = ""
+                        MejorPuntuacion = min(Puntuacion, MejorPuntuacion)
+            return MejorPuntuacion
+
+    def quien_gana(self,botones):
+
+        for row in range(3):
+            if botones[row][0]['text'] == botones[row][1]['text'] == botones[row][2]['text'] != "":
+                return botones[row][0]['text']
+
+        for column in range(3):
+            if botones[0][column]['text'] == botones[1][column]['text'] \
+                    == botones[2][column]['text'] != "":
+                return botones[0][column]['text']
+
+        if botones[0][0]['text'] == botones[1][1]['text'] == botones[2][2]['text'] != "":
+            return botones[0][0]['text']
+        elif botones[0][2]['text'] == botones[1][1]['text'] == botones[2][0]['text'] != "":
+            return botones[0][2]['text']
+        elif self.EspVacios(botones) is False:
+            return "Empate"
+        else:
+            return None
+
+    def EspVacios(self,Botones):
+        for row in range(3):
+            for col in range(3):
+                if Botones[row][col]['text'] == "":
+                    return True
+
+        return False
 
     def is_empty_board(self):
         for row in range(3):
